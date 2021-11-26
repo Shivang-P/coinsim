@@ -6,7 +6,7 @@ export default function Signup() {
     const passwordConfirmRef = useRef('')
     return (
         <>
-            <div className="card bg-base-200">
+            <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                 <div className="card-body">
                     <h1 className="card-title text-center">Sign Up</h1>
                     <div className="form-control" id="email">
@@ -33,12 +33,11 @@ export default function Signup() {
                             </label>
                             <input className="input input-bordered" type="passwordConfirm" ref={passwordConfirmRef} required />
                     </div>
-                    <button className="btn btn-primary mt-8" type="submit">Submit</button>
+                    <button className="btn btn-primary mt-6" type="submit">Submit</button>
+                    <div className="text-center mt-3">
+                        Already have an account? Log in here!
+                    </div>
                 </div>
-                
-            </div>
-            <div className="w-100 text-center">
-                Already have an account? Log in here!
             </div>
         </>
     )
