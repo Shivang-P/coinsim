@@ -29,7 +29,15 @@ export default function Login() {
 
     return (
         <>
-            <div className="card flex-shrink-0 w-full max-w-sm shadow-lg bg-base-100">
+        <div className="hero min-h-screen bg-base-200">
+        <div className="flex-col justify-center hero-content lg:flex-row">
+          <div className="text-center lg:text-left">
+            <h1 className="mb-5 text-5xl font-bold">
+            Welcome to 
+              <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600">CoinSim</h1>
+            </h1> 
+          </div> 
+          <div className="card flex-shrink-0 w-full max-w-sm shadow-lg bg-base-100">
                 <form className="card-body" onSubmit={handleSubmit}>
                     <h1 className="card-title text-3xl text-bold text-center">Login</h1>
                     <div className="form-control" id="email">
@@ -54,7 +62,10 @@ export default function Login() {
                     </div>
                 </form>
                 {error && <div className=" mx-3 mb-3 alert alert-error">{error}</div>}
-            </div>
+          </div>
+        </div>
+      </div>
+            
         </>
     )
 }
