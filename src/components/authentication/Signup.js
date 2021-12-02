@@ -23,6 +23,7 @@ export default function Signup() {
         try {
             setError('')
             setLoading(true)
+            console.log('done')
             await signup(emailRef.current.value, passwordRef.current.value)
             navigate("/")
         } catch {
