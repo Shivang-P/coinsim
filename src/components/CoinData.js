@@ -5,7 +5,6 @@ import axios from 'axios'
 import { Line } from 'react-chartjs-2'
 import { firestore } from '../firebase'
 import { useAuth } from '../contexts/AuthContext'
-import { current } from 'daisyui/colors'
 
 
 const CoinData = () => {
@@ -14,6 +13,8 @@ const CoinData = () => {
     // const [history, setHistory] = useState({})
     const [error, setError] = useState('')
     const [purchaseError, setPurchaseError] = useState('')
+    // const [purchaseSuccess, setPurchaseSuccess] = useState('')
+    // const [saleSuccess, setSaleSuccess] = useState('')
     const [saleError, setSaleError] = useState('')
     const [buyNum, setBuyNum] = useState(0)
     const [sellNum, setSellNum] = useState(0)
@@ -54,6 +55,7 @@ const CoinData = () => {
         const cost = buyNum * coin.market_data.current_price.usd
         if(cost > funds) {
             setPurchaseError('You do not have enough funds to complete this transaction')
+            // setSaleSuccess('')
         } else {
             setPurchaseError('')
             holdings[coin.id] = holdings[coin.id] ? Number(holdings[coin.id]) + Number(buyNum) : Number(buyNum)
@@ -62,13 +64,32 @@ const CoinData = () => {
                 holdings: holdings
             })
             setFunds(funds - cost)
+            // setPurchaseSuccess(`Purchase of ${buyNum} ${coin.id} has been completed!`)
+            setBuyNum(0)
         }
-
-        setBuyNum(0)
     }
 
     function handleSale(e) {
+        e.preventDefault()
+        if(!coin) return
 
+        const currentHolding = holdings[coin.id] ? holdings[coin.id] : 0;
+        const newFunds = funds + (sellNum * coin.market_data.current_price.usd)
+
+        if(sellNum > currentHolding) {
+            setSaleError('You do own enough of this coin to complete this transaction')
+            // setSaleSuccess('')
+        } else {
+            setSaleError('')
+            holdings[coin.id] = holdings[coin.id] ? Number(holdings[coin.id]) - Number(sellNum) : Number(sellNum)
+            firestore.doc(`users/${currentUser.uid}`).update({
+                cash: newFunds,
+                holdings: holdings
+            })
+            setFunds(newFunds)
+            // setSaleSuccess(`Sale of ${sellNum} ${coin.id} has been completed!`)
+            setSellNum(0)
+        }
     }
 
     // function prepareChartDataset() {
@@ -92,6 +113,9 @@ const CoinData = () => {
         <div>
             <Navbar />
             {error && <div className="mx-3 mb-3 alert alert-error">{error}</div>}
+            {/* {purchaseSuccess && <div className="mx-3 mt-4 alert alert-success">{purchaseSuccess}</div>}
+            {saleSuccess && <div className="mx-3 mt-4 alert alert-success">{saleSuccess}</div>} */}
+
             <div className="grid grid-cols-2">
                 <h1 class="text-3xl font-bold ml-7 mb-4">{coin?.name}</h1>
                 <div class="grid grid-cols-2 mr-3">
@@ -107,14 +131,16 @@ const CoinData = () => {
                                             How much {coin?.name} would you like to purchase?
                                         </span>
                                     </label>
-                                    <input className="input input-bordered" type="number" min="0" value={buyNum} onChange={e => setBuyNum(e.target.value)}required />
+                                    <input className="input input-bordered" type="number" value={buyNum} onChange={e => setBuyNum(e.target.value)}required />
                                     <p class="mt-2">Cost: ${buyNum * coin?.market_data?.current_price?.usd} USD</p>
                                 </div>
                                 <div class="modal-action">
-                                    <button for="buy-modal" className="btn btn-primary" type="submit">Buy {buyNum} {coin?.symbol?.toUpperCase()}</button>
+                                    <label for="buy-modal">
+                                        <button className="btn btn-primary" type="submit">Buy {buyNum} {coin?.symbol?.toUpperCase()}</button>
+                                    </label>
                                     <label for="buy-modal" class="btn">Close</label>
                                 </div>
-                                {purchaseError && <div className="mx-3 my-3 alert alert-error">{purchaseError}</div>}
+                                {purchaseError && <div className="mx-3 mt-4 alert alert-error">{purchaseError}</div>}
                             </form>
                         </div>
                     </div>
@@ -130,13 +156,16 @@ const CoinData = () => {
                                             How much {coin?.name} would you like to sell?
                                         </span>
                                     </label>
-                                    <input className="input input-bordered" type="number" min="0" value={sellNum} onChange={e => setSellNum(e.target.value)} required />
+                                    <input className="input input-bordered" type="number" value={sellNum} onChange={e => setSellNum(e.target.value)} required />
+                                    <p class="mt-2">Sale Money: ${sellNum * coin?.market_data?.current_price?.usd} USD</p>
                                 </div>
                                 <div class="modal-action">
-                                    <button for="sell-modal" className="btn btn-error" type="submit">Sell {sellNum} {coin?.symbol?.toUpperCase()}</button>
+                                    <label for="sell-modal">
+                                        <button className="btn btn-error" type="submit">Sell {sellNum} {coin?.symbol?.toUpperCase()}</button>
+                                    </label>
                                     <label for="sell-modal" class="btn">Close</label>
                                 </div>
-                                {saleError && <div className="mx-3 my-3 alert alert-error">{saleError}</div>}
+                                {saleError && <div className="mx-3 mt-4 alert alert-error">{saleError}</div>}
                             </form>
                         </div>
                     </div>
