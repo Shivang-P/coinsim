@@ -4,7 +4,7 @@ const Coin = ({ image, name, symbol, price, volume }) => {
 
     return (
         <>
-        <tr> 
+        <tr class="grid grid-cols-5 bg-base-200 m-4 p-2 rounded-full"> 
             <td>
                 <div class="flex items-center space-x-3">
                     <div class="avatar">
@@ -14,16 +14,16 @@ const Coin = ({ image, name, symbol, price, volume }) => {
                     </div> 
                 </div>
             </td> 
-            <td>
+            <td class="my-auto font-bold">
                 {name}
             </td> 
-            <td>
-                {symbol}
+            <td class="my-auto font-bold">
+                {symbol.toUpperCase()}
             </td> 
-            <td>
+            <td class="my-auto font-bold">
                 {price}
             </td> 
-            <td>
+            <td class="my-auto font-bold">
                 {volume.toLocaleString()}
             </td> 
         </tr>

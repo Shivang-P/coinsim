@@ -10,7 +10,7 @@ import { useAuth } from '../contexts/AuthContext'
 const CoinData = () => {
     const {currentUser} = useAuth();
     const [coin, setCoin] = useState({})
-    // const [history, setHistory] = useState({})
+    const [history, setHistory] = useState(null)
     const [error, setError] = useState('')
     const [purchaseError, setPurchaseError] = useState('')
     // const [purchaseSuccess, setPurchaseSuccess] = useState('')
@@ -38,14 +38,17 @@ const CoinData = () => {
             setFunds(userData[0].data().cash)
             setHoldings(userData[0].data().holdings)
         })
-        // axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=30`)
-        // .then(res => {
-        //     setError('')
-        //     setHistory(res.data)
-        // }).catch(error => {
-        //     console.log(error)
-        //     setError('No Coin Data Found')
-        // })
+
+        axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=30`)
+        .then(res => {
+            setError('')
+            setHistory(res.data)
+            console.log(res.data)
+        }).catch(error => {
+            console.log(error)
+            setError('No Coin History Found')
+        })
+
     }, [])
 
     async function handlePurchase(e) {
@@ -92,22 +95,21 @@ const CoinData = () => {
         }
     }
 
-    // function prepareChartDataset() {
-    //     let prices = []
-    //     for(let i = 0; i < 31; i++) {
-    //         if(history) {
-    //             prices.push(history.prices[i][1])
-    //         }
-    //     }
-    //     return prices
-    // }
-
-    // const data = {
-    //     labels: [1],
-    //     datasets: [{
-    //         data: prepareChartDataset()[0]
-    //     }]
-    // }
+    function prepareChartDataset() {
+        let prices = []
+        let labels = Array(31).fill('')
+        for(let i = 0; i < Math.min(31, history?.prices?.length); i++) {
+            if(history) {
+                prices.push(history.prices[30 - i][1])
+            }
+        }
+        return {
+            labels: labels,
+            datasets: [{
+                data: prices
+            }]
+        }
+    }
 
     return (
         <div>
@@ -171,6 +173,7 @@ const CoinData = () => {
                     </div>
                 </div>
             </div>
+
             <div class="shadow stats grid mt-3 w-5/6 mx-auto">
                 <div class="stat place-items-center place-content-center bg-base-200">
                     <div class="stat-title">Current Price (USD)</div> 
@@ -193,9 +196,11 @@ const CoinData = () => {
                     <div class="stat-desc text-error">{coin?.market_data?.atl_change_percentage.usd}%</div>
                 </div> 
             </div>
+
             <div>
-                {/* {history && <Line data={data}/>} */}
+                {/* {history && <Line data={prepareChartDataset()} />} */}
             </div>
+
             <div class="card lg:card-side bordered my-5 bg-base-200 w-5/6 mx-auto">
                 <figure class="mx-4 my-12">
                     <img src={coin?.image?.large ?? ''} />

@@ -47,7 +47,26 @@ function Coinlist() {
                 </div>
             </div>
             <div class="">
-                <ul class="">
+                <ul class="grid grid-row">
+                    <li>
+                        <tr class="grid grid-cols-5 bg-base-200 m-4 p-2 rounded-lg"> 
+                            <td class="my-auto font-bold ml-2">
+                                IMAGE
+                            </td> 
+                            <td class="my-auto font-bold">
+                                NAME
+                            </td> 
+                            <td class="my-auto font-bold">
+                                TICKER
+                            </td> 
+                            <td class="my-auto font-bold">
+                                PRICE
+                            </td> 
+                            <td class="my-auto font-bold">
+                                VOLUME
+                            </td> 
+                        </tr>
+                    </li>
                     {filteredCoins.map(coin => {
                         return (
                             <Link to={`/data/${coin.id}`}>
