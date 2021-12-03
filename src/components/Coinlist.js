@@ -35,10 +35,10 @@ function Coinlist() {
         <div>
             <Navbar />
             {error && <div className=" mx-3 mb-3 alert alert-error">{error}</div>}
-            <div class="m-3 p-4 card bg-base-200">
+            <div class="m-3 px-4 pb-4 card bg-base-200">
                 <div class="form-control">
                     <label class="label">
-                        <h1>Search For A Coin:</h1>
+                        <h1 class="font-bold">Search For A Coin:</h1>
                     </label> 
                     <div class="flex space-x-2">
                         <input type="text" placeholder="Search" class="w-full input input-primary input-bordered" onChange={handleChange}/> 
@@ -60,7 +60,7 @@ function Coinlist() {
                                 TICKER
                             </td> 
                             <td class="my-auto font-bold">
-                                PRICE
+                                PRICE (USD)
                             </td> 
                             <td class="my-auto font-bold">
                                 VOLUME

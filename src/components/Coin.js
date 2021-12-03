@@ -21,7 +21,7 @@ const Coin = ({ image, name, symbol, price, volume }) => {
                 {symbol.toUpperCase()}
             </td> 
             <td class="my-auto font-bold">
-                {price}
+                ${price}
             </td> 
             <td class="my-auto font-bold">
                 {volume.toLocaleString()}
