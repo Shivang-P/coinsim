@@ -13,8 +13,6 @@ const CoinData = () => {
     const [history, setHistory] = useState(null)
     const [error, setError] = useState('')
     const [purchaseError, setPurchaseError] = useState('')
-    // const [purchaseSuccess, setPurchaseSuccess] = useState('')
-    // const [saleSuccess, setSaleSuccess] = useState('')
     const [saleError, setSaleError] = useState('')
     const [buyNum, setBuyNum] = useState(0)
     const [sellNum, setSellNum] = useState(0)
@@ -115,8 +113,6 @@ const CoinData = () => {
         <div>
             <Navbar />
             {error && <div className="mx-3 mb-3 alert alert-error">{error}</div>}
-            {/* {purchaseSuccess && <div className="mx-3 mt-4 alert alert-success">{purchaseSuccess}</div>}
-            {saleSuccess && <div className="mx-3 mt-4 alert alert-success">{saleSuccess}</div>} */}
 
             <div className="grid grid-cols-2">
                 <h1 class="text-3xl font-bold ml-7 mb-4">{coin?.name}</h1>
@@ -137,9 +133,9 @@ const CoinData = () => {
                                     <p class="mt-2">Cost: ${buyNum * coin?.market_data?.current_price?.usd} USD</p>
                                 </div>
                                 <div class="modal-action">
-                                    <label for="buy-modal">
-                                        <button className="btn btn-primary" type="submit">Buy {buyNum} {coin?.symbol?.toUpperCase()}</button>
-                                    </label>
+                                    <button for="buy-modal" class="btn btn-primary" type="submit">
+                                        Buy {buyNum} {coin?.symbol?.toUpperCase()}
+                                    </button>
                                     <label for="buy-modal" class="btn">Close</label>
                                 </div>
                                 {purchaseError && <div className="mx-3 mt-4 alert alert-error">{purchaseError}</div>}
@@ -162,9 +158,7 @@ const CoinData = () => {
                                     <p class="mt-2">Sale Money: ${sellNum * coin?.market_data?.current_price?.usd} USD</p>
                                 </div>
                                 <div class="modal-action">
-                                    <label for="sell-modal">
-                                        <button className="btn btn-error" type="submit">Sell {sellNum} {coin?.symbol?.toUpperCase()}</button>
-                                    </label>
+                                    <button for="sell-modal" className="btn btn-error" type="submit">Sell {sellNum} {coin?.symbol?.toUpperCase()}</button>
                                     <label for="sell-modal" class="btn">Close</label>
                                 </div>
                                 {saleError && <div className="mx-3 mt-4 alert alert-error">{saleError}</div>}
